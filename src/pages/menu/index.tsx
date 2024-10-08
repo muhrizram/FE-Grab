@@ -11,7 +11,7 @@ import Sidebar from "../../components/Sidebar";
 import { useMenuContext } from "../../providers/MenuProvider";
 
 const MenuApp = () => {
-  const { foodItems } = useMenuContext();
+  const { foodItems, foodId, handleSubmit } = useMenuContext();
 
   return (
     <Sidebar>
@@ -43,7 +43,12 @@ const MenuApp = () => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" color="primary">
+              <Button
+                size="small"
+                disabled={foodId.includes(food.id)}
+                color="primary"
+                onClick={() => handleSubmit(food.id)}
+              >
                 Pesan Sekarang
               </Button>
             </CardActions>

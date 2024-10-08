@@ -1,18 +1,15 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { apiApp } from "../apiApp";
-import { ApiListInterface } from "../../interfaces/ApiListInterface";
+import { ApiListInterface } from "../../interfaces/MenuInterface";
 
 const useInfiniteListMenu = () => {
   const getListMenuFn = async ({ pageParam = 0 }: { pageParam?: number }) => {
-    console.log("Fetching data with pageParam:", pageParam);
     try {
       const response = await apiApp.get<ApiListInterface>("/menu");
-
-      console.log("Response data:", response.data);
       return response.data.data || [];
     } catch (error) {
       console.error("Error fetching list menu:", error);
-      return []; // Mengembalikan array kosong untuk mencegah crash
+      return []; 
     }
   };
 
@@ -24,8 +21,6 @@ const useInfiniteListMenu = () => {
     },
     initialPageParam: 1,
   });
-
-  console.log("Infinite query:", infiniteQuery); // Tambahkan log ini
 
   return { ...infiniteQuery };
 };
