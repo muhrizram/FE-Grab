@@ -1,10 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import { createRoot } from "react-dom/client";
+import App from "./App.tsx";
+import "./index.css";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+const theme = createTheme({
+  typography: {
+    fontFamily: "Inter, Arial, sans-serif", // Mengatur font default menjadi Inter
+  },
+});
+
+createRoot(document.getElementById("root")!).render(
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
     <App />
-  </StrictMode>,
-)
+  </ThemeProvider>
+);
