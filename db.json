@@ -1,0 +1,22 @@
+{
+    "menu": [
+        {
+            "name": "Omelet Jepang dengan Kuah Kari",
+            "image": "/assets/image/omelet_curry.jpg",
+            "description": "Omelet khas Jepang disajikan dengan kuah kari yang gurih.",
+            "price": "Rp. 25.000"
+        },
+        {
+            "name": "Omelet Jepang dengan Kuah Blackpepper",
+            "image": "/assets/image/omelet_blackpepper.jpg",
+            "description": "Omelet khas Jepang disajikan dengan kuah lada hitam yang pedas.",
+            "price": "Rp. 27.000"
+        },
+        {
+            "name": "Omelet Jepang dengan Kuah Gulai",
+            "image": "/assets/image/omelet_gulai.jpg",
+            "description": "Omelet khas Jepang disajikan dengan kuah gulai yang kaya rempah.",
+            "price": "Rp. 28.000"
+        }
+    ]
+}
