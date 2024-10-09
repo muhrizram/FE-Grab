@@ -39,7 +39,10 @@ const MenuApp = () => {
                 {food.description}
               </Typography>
               <Typography variant="body2" color="text.primary" sx={{ mt: 1 }}>
-                {food.price}
+                {Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                }).format(Number(food.price))}
               </Typography>
             </CardContent>
             <CardActions>
@@ -47,7 +50,7 @@ const MenuApp = () => {
                 size="small"
                 disabled={foodId.includes(food.id)}
                 color="primary"
-                onClick={() => handleSubmit(food.id)}
+                onClick={() => handleSubmit(food)}
               >
                 Pesan Sekarang
               </Button>

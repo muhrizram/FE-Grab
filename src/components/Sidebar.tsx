@@ -16,7 +16,7 @@ import {
 } from "@mui/icons-material";
 import logo from "../assets/image/logo_dashboard.png";
 import { ReactNode } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface SidebarProps {
   children: ReactNode;
@@ -60,7 +60,8 @@ const Sidebar = ({ children }: SidebarProps) => {
           <List>
             {menuItems.map((item, index) => (
               <ListItem
-                component="button"
+                component={Link}
+                to={item.path}
                 key={index}
                 sx={{
                   backgroundColor:

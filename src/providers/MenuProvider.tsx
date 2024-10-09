@@ -9,19 +9,12 @@ import useInfiniteListMenu from "../api/menu/useInfiniteListMenu";
 import useCreateOrder from "../api/menu/useCreateOrder";
 import useInfiniteListOrderByPax from "../api/menu/useInfiniteListOrderByPax";
 import { toast } from "sonner";
-
-interface FoodItem {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-  price: string;
-}
+import { Menu } from "../interfaces/MenuInterface";
 
 interface MenuContextType {
-  foodItems: FoodItem[];
+  foodItems: Menu[];
   foodId: string[];
-  handleSubmit: (id: string) => void;
+  handleSubmit: (food: Menu) => void;
 }
 
 const MenuContext = createContext<MenuContextType | undefined>(undefined);
@@ -33,7 +26,7 @@ interface MenuProviderProps {
 export const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
   const { data } = useInfiniteListMenu();
 
-  const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
+  const [foodItems, setFoodItems] = useState<Menu[]>([]);
 
   const [foodId, setFoodId] = useState<string[]>([]);
 
@@ -51,7 +44,7 @@ export const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
   useEffect(() => {
     if (dataOrder) {
       const orderIds = dataOrder.pages.flatMap((page) =>
-        page.map((order) => order.menuId)
+        page.data.map((order) => order.menu.id)
       );
       setFoodId(orderIds);
     }
@@ -59,7 +52,7 @@ export const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
 
   const { mutate: mutateCreate } = useCreateOrder({
     onSuccess: (data) => {
-      setFoodId((prevFoodId) => [...prevFoodId, data.data.menuId]);
+      setFoodId((prevFoodId) => [...prevFoodId, data.data.menu.id]);
       toast.success("Berhasil memesan menu");
     },
     onError: () => {
@@ -67,10 +60,17 @@ export const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
     },
   });
 
-  const handleSubmit = (id: string) => {
+  const handleSubmit = (food: Menu) => {
     const payload = {
-      menuId: id,
-      paxId: "916d3d90-bd36-4e9f-9153-187e8d7e1bde",
+      menu: {
+        id: food.id,
+        name: food.name,
+        price: food.price,
+      },
+      pax: {
+        id: "916d3d90-bd36-4e9f-9153-187e8d7e1bde",
+        fullName: "John Doe",
+      },
       status: "on going",
     };
     return mutateCreate(payload);

@@ -1,13 +1,19 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { apiApp } from "../apiApp";
-import { ApiListInterface } from "../../interfaces/MenuInterface";
+import { ApiListInterface, CUDResponse } from "../../interfaces/MenuInterface";
 
 interface UseInfiniteListOrderByPaxProps {
   id: string;
   search?: string;
   limit?: number;
+  page?: number;
   sortBy?: string;
   direction?: 'asc' | 'desc';
+}
+
+interface ListOrderResponse {
+  data: CUDResponse[]; 
+  totalData: number;
 }
 
 const useInfiniteListOrderByPax = ({
@@ -16,11 +22,12 @@ const useInfiniteListOrderByPax = ({
   limit,
   sortBy,
   direction,
+  page
 }: UseInfiniteListOrderByPaxProps) => {
-  const getListOrderFn = async ({ pageParam = 0 }: { pageParam?: number }) => {
-
+  const getListOrderFn = async () => {
+    console.log("Fetching list order...");
     const params: Record<string, any> = {
-      page: pageParam,
+      page: page,
       ...(search && { search }),
       ...(limit && { limit }),
       ...(sortBy && { sortBy }),
@@ -32,22 +39,24 @@ const useInfiniteListOrderByPax = ({
         `/transaction/orders/${id}`,
         { params }
       );
-      return response.data.data || [];
+      return {
+        data: response.data.data || [],
+        totalData: response.data.totalData || 0, // Tangkap totalData di sini
+      };
     } catch (error) {
       console.error("Error fetching list orders:", error);
-      return []; 
+      return { data: [], totalData: 0 };
     }
   };
 
-  const infiniteQuery = useInfiniteQuery({
-    queryKey: ["list-orders", id, search, limit, sortBy, direction],
+  const infiniteQuery = useInfiniteQuery<ListOrderResponse>({
+    queryKey: ["list-orders", id, search, limit, sortBy, direction, page],
     queryFn: getListOrderFn,
     getNextPageParam(lastPage, allPages) {
-      return lastPage?.length > 0 ? allPages.length : undefined;
+      return lastPage?.data.length > 0 ? allPages.length : undefined;
     },
     initialPageParam: 0,
   });
-
   return { ...infiniteQuery };
 };
 
