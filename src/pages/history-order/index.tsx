@@ -1,8 +1,11 @@
+import HistoryOrderApp from "../../components/history-order/HistoryOrderApp";
+import { HistoryOrderProvider } from "../../providers/HistoryOrderProvider";
+
 const HistoryOrder = () => {
   return (
-    <div>
-      <h1>History Order</h1>
-    </div>
+    <HistoryOrderProvider>
+      <HistoryOrderApp />
+    </HistoryOrderProvider>
   );
 };
 

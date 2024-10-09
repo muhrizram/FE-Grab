@@ -19,6 +19,7 @@ const MenuApp = () => {
         sx={{
           display: "flex",
           gap: "16px",
+          my: "20px",
           flexWrap: "wrap",
           justifyContent: "center",
         }}

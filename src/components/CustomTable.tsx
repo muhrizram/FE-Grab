@@ -30,7 +30,7 @@ const CustomTable = <T,>({
   setPage,
   limit,
   setLimit,
-  rowsPerPageOptions = [1, 25, 50],
+  rowsPerPageOptions = [10, 25, 50],
 }: ReusableTableProps<T>) => {
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);

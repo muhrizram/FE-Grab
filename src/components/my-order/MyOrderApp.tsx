@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import CustomTable from "../../components/CustomTable";
 import Sidebar from "../../components/Sidebar";
 import { useMyOrderContext } from "../../providers/MyOrderProvider";
@@ -9,7 +10,9 @@ const MyOrderApp = () => {
   return (
     <div>
       <Sidebar>
-        <h1>My Order</h1>
+        <Typography variant="h4" mb="30px" component="h1" fontWeight="bold">
+          My Order
+        </Typography>
         {data.length > 0 ? (
           <CustomTable
             columns={columns}

@@ -38,9 +38,9 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
   children,
 }) => {
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
   const { data: dataOrder, refetch } = useInfiniteListOrderByPax({
-    id: "916d3d90-bd36-4e9f-9153-187e8d7e1bde",
+    id: "95a3bcb1-2148-4ff4-ad8b-d989817243d5",
     page: page,
     limit: limit,
   });
@@ -83,7 +83,7 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
                   handleEditOrder("canceled", order);
                 }}
                 sx={{
-                  backgroundColor: "#ff6666",
+                  backgroundColor: "#F05A7E",
                   color: "white",
                   "&:hover": { backgroundColor: "#ff3333" },
                 }}
@@ -95,7 +95,7 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
                   handleEditOrder("completed", order);
                 }}
                 sx={{
-                  backgroundColor: "#009900",
+                  backgroundColor: "#0B8494",
                   color: "white",
                   "&:hover": { backgroundColor: "#006600" },
                 }}

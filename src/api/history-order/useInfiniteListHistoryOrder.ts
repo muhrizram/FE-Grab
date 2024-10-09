@@ -1,31 +1,26 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { apiApp } from "../apiApp";
 import { ApiListInterface, CUDResponse } from "../../interfaces/MenuInterface";
+import { apiApp } from "../apiApp";
 
-interface UseInfiniteListOrderByPaxProps {
-  id: string;
+interface UseInfiniteListHistoryOrderProps {
   search?: string;
   limit?: number;
   page?: number;
   sortBy?: string;
   direction?: "asc" | "desc";
 }
-
-interface ListOrderResponse {
+interface ListHistoryOrderResponse {
   data: CUDResponse[];
   totalData: number;
 }
-
-const useInfiniteListOrderByPax = ({
-  id,
+const useInfiniteListHistoryOrder = ({
   search,
   limit,
   sortBy,
   direction,
   page,
-}: UseInfiniteListOrderByPaxProps) => {
-  const getListOrderFn = async () => {
-    console.log("Fetching list order...");
+}: UseInfiniteListHistoryOrderProps) => {
+  const getListHistoryorderFn = async () => {
     const params: Record<string, any> = {
       page: page,
       ...(search && { search }),
@@ -33,25 +28,22 @@ const useInfiniteListOrderByPax = ({
       ...(sortBy && { sortBy }),
       ...(direction && { direction }),
     };
-
     try {
-      const response = await apiApp.get<ApiListInterface>(
-        `/transaction/orders/${id}`,
-        { params }
-      );
+      const response = await apiApp.get<ApiListInterface>(`/history/orders`, {
+        params,
+      });
       return {
         data: response.data.data || [],
         totalData: response.data.totalData || 0,
       };
     } catch (error) {
-      console.error("Error fetching list orders:", error);
+      console.error("Error fetching list history orders:", error);
       return { data: [], totalData: 0 };
     }
   };
-
-  const infiniteQuery = useInfiniteQuery<ListOrderResponse>({
-    queryKey: ["list-orders", id, search, limit, sortBy, direction, page],
-    queryFn: getListOrderFn,
+  const infiniteQuery = useInfiniteQuery<ListHistoryOrderResponse>({
+    queryKey: ["list-history-orders", search, limit, sortBy, direction, page],
+    queryFn: getListHistoryorderFn,
     getNextPageParam(lastPage, allPages) {
       return lastPage?.data.length > 0 ? allPages.length : undefined;
     },
@@ -60,4 +52,4 @@ const useInfiniteListOrderByPax = ({
   return { ...infiniteQuery };
 };
 
-export default useInfiniteListOrderByPax;
+export default useInfiniteListHistoryOrder;

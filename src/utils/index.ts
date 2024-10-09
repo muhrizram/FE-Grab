@@ -2,5 +2,5 @@ import Cookies from "js-cookie"
 
 export const getUserToken = () => {
     // return Cookies.get("access_token")
-    return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb2JhIiwiaWF0IjoxNzI4NDM3NDAzLCJleHAiOjE3Mjg0NjYyMDN9.f1erxwyT-QY0vsYEU04OHjBZH1NIlLRtvdMdcLmph40"
+    return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjb2JhIiwiaWF0IjoxNzI4NDU0ODk2LCJleHAiOjE3Mjg0ODM2OTZ9.RC_a3u0ZTAy1810VuNv6GUWpnf-mUEl-0fpupp5nCAk"
 }

@@ -5,19 +5,18 @@ export interface ApiCUDResponseInterface {
   data: CUDResponse;
 }
 
-export interface ApiListInterface { 
-  message: string
-  statusCode: number
-  status: string
-  totalData?: number
-  data?: Array<any>
+export interface ApiListInterface {
+  message: string;
+  statusCode: number;
+  status: string;
+  totalData?: number;
+  data?: Array<any>;
 }
 
-export interface CreateOrderPayload 
-{
-  pax: Pax
-  menu: Menu
-  status: string
+export interface CreateOrderPayload {
+  pax: Pax;
+  menu: Menu;
+  status: string;
 }
 
 interface Pax {
@@ -37,9 +36,7 @@ export interface CUDResponse {
   id: string;
   menu: Menu;
   pax: Pax;
-  status?: string;
+  status: string;
   createdAt?: string;
   updatedAt?: string;
 }
-
-

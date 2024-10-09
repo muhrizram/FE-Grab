@@ -17,6 +17,7 @@ import {
 import logo from "../assets/image/logo_dashboard.png";
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
+import grabfood from "../assets/image/grabfood.png";
 
 interface SidebarProps {
   children: ReactNode;
@@ -97,7 +98,19 @@ const Sidebar = ({ children }: SidebarProps) => {
         </Box>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
+        <Toolbar>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <img src={grabfood} alt="grabfood" style={{ width: 200 }} />
+          </Box>
+        </Toolbar>
         {children}
       </Box>
     </Box>

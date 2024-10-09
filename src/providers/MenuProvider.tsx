@@ -68,8 +68,8 @@ export const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
         price: food.price,
       },
       pax: {
-        id: "916d3d90-bd36-4e9f-9153-187e8d7e1bde",
-        fullName: "John Doe",
+        id: "95a3bcb1-2148-4ff4-ad8b-d989817243d5",
+        fullName: "coba",
       },
       status: "on going",
     };
