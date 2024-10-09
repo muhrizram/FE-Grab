@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useHistoryOrderContext } from "../../providers/HistoryOrderProvider";
 import CustomTable from "../CustomTable";
 import DataNotFound from "../my-order/DataNotFound";

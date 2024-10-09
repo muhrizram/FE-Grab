@@ -9,9 +9,17 @@ import {
 } from "@mui/material";
 import Sidebar from "../../components/Sidebar";
 import { useMenuContext } from "../../providers/MenuProvider";
+import PaginationComp from "../../components/PaginationComp";
 
 const MenuApp = () => {
-  const { foodItems, foodId, handleSubmit } = useMenuContext();
+  const {
+    foodItems,
+    foodId,
+    handleSubmit,
+    totalPages,
+    page,
+    handlePageChange,
+  } = useMenuContext();
 
   return (
     <Sidebar>
@@ -58,6 +66,13 @@ const MenuApp = () => {
             </CardActions>
           </Card>
         ))}
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <PaginationComp
+          totalPages={totalPages}
+          currentPage={page}
+          onPageChange={handlePageChange}
+        />
       </Box>
     </Sidebar>
   );

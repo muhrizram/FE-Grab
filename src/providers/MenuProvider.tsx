@@ -15,6 +15,9 @@ interface MenuContextType {
   foodItems: Menu[];
   foodId: string[];
   handleSubmit: (food: Menu) => void;
+  page: number;
+  handlePageChange: (page: number) => void;
+  totalPages: number;
 }
 
 const MenuContext = createContext<MenuContextType | undefined>(undefined);
@@ -24,7 +27,15 @@ interface MenuProviderProps {
 }
 
 export const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
-  const { data } = useInfiniteListMenu();
+  const [page, setPage] = useState<number>(1);
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
+
+  const { data } = useInfiniteListMenu({ page: page - 1 });
+
+  const totalPages = data?.pages[0]?.totalPage || 0;
 
   const [foodItems, setFoodItems] = useState<Menu[]>([]);
 
@@ -32,13 +43,15 @@ export const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (data) {
-      const newItems = data.pages.flatMap((page) => page);
+      const newItems = data.pages.flatMap((page) =>
+        page.data.map((item) => item)
+      );
       setFoodItems(newItems);
     }
   }, [data]);
 
   const { data: dataOrder } = useInfiniteListOrderByPax({
-    id: "916d3d90-bd36-4e9f-9153-187e8d7e1bde",
+    id: "95a3bcb1-2148-4ff4-ad8b-d989817243d5",
   });
 
   useEffect(() => {
@@ -77,7 +90,16 @@ export const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
   };
 
   return (
-    <MenuContext.Provider value={{ foodItems, foodId, handleSubmit }}>
+    <MenuContext.Provider
+      value={{
+        foodItems,
+        foodId,
+        handleSubmit,
+        page,
+        handlePageChange,
+        totalPages,
+      }}
+    >
       {children}
     </MenuContext.Provider>
   );

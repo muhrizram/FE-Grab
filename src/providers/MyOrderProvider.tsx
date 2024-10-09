@@ -47,7 +47,7 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
 
   const [myOrder, setMyOrder] = useState<MenuTable[]>([]);
 
-  const { mutate: mutateUpdate } = useUpdateOrder({
+  const { mutate: mutateUpdate, isPending } = useUpdateOrder({
     onSuccess: () => {
       toast.success("Order dimasukkan ke History");
       refetch();
@@ -79,6 +79,7 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
           action: (
             <Box sx={{ display: "flex", gap: "10px" }}>
               <Button
+                disabled={isPending}
                 onClick={() => {
                   handleEditOrder("canceled", order);
                 }}
@@ -91,6 +92,7 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
                 Cancel
               </Button>
               <Button
+                disabled={isPending}
                 onClick={() => {
                   handleEditOrder("completed", order);
                 }}

@@ -15,6 +15,7 @@ interface HistoryOrderProps {
 }
 
 interface HistoryOrderTable {
+  pax: string;
   menu: string;
   price: string;
   status: ReactNode;
@@ -46,6 +47,7 @@ export const HistoryOrderProvider: React.FC<HistoryOrderProps> = ({
   });
 
   const columns: Column<HistoryOrderTable>[] = [
+    { id: "pax", label: "Pax" },
     { id: "menu", label: "Menu" },
     { id: "price", label: "Price" },
     { id: "status", label: "Status" },
@@ -55,6 +57,7 @@ export const HistoryOrderProvider: React.FC<HistoryOrderProps> = ({
     if (dataHistoryOrder) {
       const newOrder = dataHistoryOrder.pages.flatMap((page) =>
         page.data.map((order: CUDResponse) => ({
+          pax: order.pax.fullName,
           menu: order.menu.name,
           price: new Intl.NumberFormat("id-ID", {
             style: "currency",

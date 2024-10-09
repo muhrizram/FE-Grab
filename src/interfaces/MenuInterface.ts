@@ -10,6 +10,7 @@ export interface ApiListInterface {
   statusCode: number;
   status: string;
   totalData?: number;
+  totalPage?: number;
   data?: Array<any>;
 }
 
