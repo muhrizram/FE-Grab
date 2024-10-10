@@ -11,10 +11,12 @@ import { Box, Button } from "@mui/material";
 import { toast } from "sonner";
 import { CUDResponse } from "../interfaces/MenuInterface";
 import useUpdateOrder from "../api/my-order/useUpdateOrder";
+import useGetOrderById from "../api/my-order/useGetOrderById";
 
 interface MenuTable {
-  menu: string;
-  price: string;
+  id: string;
+  "menu.name": string;
+  "menu.price": string;
   action: ReactNode;
 }
 
@@ -26,7 +28,26 @@ interface MyOrderContextType {
   setPage: (page: number) => void;
   limit: number;
   setLimit: (limit: number) => void;
+  search: string;
+  handleChangeSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  sort: string;
+  direction: string;
+  handleSorting: (column: string, sort: string) => void;
+  handleRowClick: (row: MenuTable) => void;
+  open: boolean;
+  handleClose: () => void;
+  orderDetail: OrderDetail | undefined;
 }
+
+type OrderDetail = {
+  id: string;
+  fullName: string;
+  menuName: string;
+  menuPrice: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
 const MyOrderContext = createContext<MyOrderContextType | undefined>(undefined);
 
@@ -39,10 +60,19 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
 }) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
+  const [search, setSearch] = useState<string>("");
+  const [sort, setSort] = useState<string>("");
+  const [direction, setDirection] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [detailId, setDetailId] = useState<string>("");
+  const [orderDetail, setOrderDetail] = useState<OrderDetail>();
   const { data: dataOrder, refetch } = useInfiniteListOrderByPax({
     id: "95a3bcb1-2148-4ff4-ad8b-d989817243d5",
     page: page,
     limit: limit,
+    search: search,
+    sortBy: sort,
+    direction: direction,
   });
 
   const [myOrder, setMyOrder] = useState<MenuTable[]>([]);
@@ -71,8 +101,9 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
     if (dataOrder) {
       const newOrder = dataOrder.pages.flatMap((page) =>
         page.data.map((order: CUDResponse) => ({
-          menu: order.menu.name,
-          price: new Intl.NumberFormat("id-ID", {
+          id: order.id,
+          "menu.name": order.menu.name,
+          "menu.price": new Intl.NumberFormat("id-ID", {
             style: "currency",
             currency: "IDR",
           }).format(Number(order.menu.price)),
@@ -115,10 +146,52 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
   const totalData = dataOrder?.pages[0]?.totalData || 0;
 
   const columns: Column<MenuTable>[] = [
-    { id: "menu", label: "Menu" },
-    { id: "price", label: "Price" },
+    { id: "menu.name", label: "Menu", sortable: true },
+    { id: "menu.price", label: "Price", sortable: true },
     { id: "action", label: "Action" },
   ];
+
+  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    setPage(0);
+  };
+
+  const handleSorting = (sort: string, direction: string) => {
+    setSort(sort);
+    setDirection(direction);
+  };
+
+  const handleRowClick = (row: MenuTable) => {
+    setDetailId(row.id);
+    setOpen(true);
+  };
+
+  const { data: dataDetail } = useGetOrderById({ id: detailId });
+
+  useEffect(() => {
+    if (dataDetail) {
+      if (Array.isArray(dataDetail)) {
+        console.log("Data is empty");
+      } else {
+        setOrderDetail({
+          id: dataDetail.data.id,
+          fullName: dataDetail.data.pax.fullName,
+          menuName: dataDetail.data.menu.name,
+          menuPrice: new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+          }).format(Number(dataDetail.data.menu.price)),
+          status: dataDetail.data.status,
+          createdAt: dataDetail.data.createdAt,
+          updatedAt: dataDetail.data.updatedAt,
+        });
+      }
+    }
+  }, [dataDetail]);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <MyOrderContext.Provider
@@ -130,6 +203,15 @@ export const MyOrderProvider: React.FC<MyOrderProviderProps> = ({
         setPage,
         limit,
         setLimit,
+        search,
+        handleChangeSearch,
+        sort,
+        direction,
+        handleSorting,
+        handleRowClick,
+        open,
+        orderDetail,
+        handleClose,
       }}
     >
       {children}

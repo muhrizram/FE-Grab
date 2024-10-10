@@ -7,7 +7,7 @@ interface UseInfiniteListHistoryOrderProps {
   limit?: number;
   page?: number;
   sortBy?: string;
-  direction?: "asc" | "desc";
+  direction?: string;
 }
 interface ListHistoryOrderResponse {
   data: CUDResponse[];

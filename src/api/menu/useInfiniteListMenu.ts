@@ -9,7 +9,6 @@ interface ListMenuResponse {
 
 const useInfiniteListMenu = ({ page = 0 }: { page?: number } = {}) => {
   const getListMenuFn = async () => {
-    console.log("Fetching list menu...");
     try {
       const response = await apiApp.get<ApiListInterface>("/menu", {
         params: { page },

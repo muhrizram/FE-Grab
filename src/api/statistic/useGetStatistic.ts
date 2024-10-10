@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiApp } from "../apiApp";
-import { StatisticResponse } from "../../interfaces/Type";
+import { StatisticResponse } from "../../interfaces/type";
 
 const useGetStatistic = () => {
   const getStatisticFn = async () => {
-    console.log("Fetching statistic...");
     try {
       const response = await apiApp.get<StatisticResponse>("/statistic");
       return response.data || [];

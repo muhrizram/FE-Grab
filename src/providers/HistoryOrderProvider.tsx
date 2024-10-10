@@ -6,19 +6,12 @@ import {
   useState,
 } from "react";
 import useInfiniteListHistoryOrder from "../api/history-order/useInfiniteListHistoryOrder";
-import { Column } from "../interfaces/TableInterface";
+import { Column, HistoryOrderTable } from "../interfaces/TableInterface";
 import { CUDResponse } from "../interfaces/MenuInterface";
 import { Chip } from "@mui/material";
 
 interface HistoryOrderProps {
   children: ReactNode;
-}
-
-interface HistoryOrderTable {
-  pax: string;
-  menu: string;
-  price: string;
-  status: ReactNode;
 }
 
 interface HistoryOrderContextType {
@@ -29,6 +22,11 @@ interface HistoryOrderContextType {
   setPage: (page: number) => void;
   limit: number;
   setLimit: (limit: number) => void;
+  search: string;
+  handleChangeSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  sort: string;
+  direction: string;
+  handleSorting: (column: string, sort: string) => void;
 }
 
 const HistoryOrderContext = createContext<HistoryOrderContextType | undefined>(
@@ -40,16 +38,22 @@ export const HistoryOrderProvider: React.FC<HistoryOrderProps> = ({
 }) => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
+  const [search, setSearch] = useState<string>("");
+  const [sort, setSort] = useState<string>("");
+  const [direction, setDirection] = useState<string>("");
   const [historyOrder, setHistoryOrder] = useState<HistoryOrderTable[]>([]);
   const { data: dataHistoryOrder } = useInfiniteListHistoryOrder({
     page: page,
     limit: limit,
+    search: search,
+    sortBy: sort,
+    direction: direction,
   });
 
   const columns: Column<HistoryOrderTable>[] = [
-    { id: "pax", label: "Pax" },
-    { id: "menu", label: "Menu" },
-    { id: "price", label: "Price" },
+    { id: "pax.fullName", label: "Pax", sortable: true },
+    { id: "menu.name", label: "Menu", sortable: true },
+    { id: "menu.price", label: "Price", sortable: true },
     { id: "status", label: "Status" },
   ];
 
@@ -57,9 +61,10 @@ export const HistoryOrderProvider: React.FC<HistoryOrderProps> = ({
     if (dataHistoryOrder) {
       const newOrder = dataHistoryOrder.pages.flatMap((page) =>
         page.data.map((order: CUDResponse) => ({
-          pax: order.pax.fullName,
-          menu: order.menu.name,
-          price: new Intl.NumberFormat("id-ID", {
+          number: order.id,
+          "pax.fullName": order.pax.fullName,
+          "menu.name": order.menu.name,
+          "menu.price": new Intl.NumberFormat("id-ID", {
             style: "currency",
             currency: "IDR",
           }).format(Number(order.menu.price)),
@@ -85,6 +90,16 @@ export const HistoryOrderProvider: React.FC<HistoryOrderProps> = ({
 
   const totalData = dataHistoryOrder?.pages[0]?.totalData || 0;
 
+  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    setPage(0);
+  };
+
+  const handleSorting = (sort: string, direction: string) => {
+    setSort(sort);
+    setDirection(direction);
+  };
+
   return (
     <HistoryOrderContext.Provider
       value={{
@@ -95,6 +110,11 @@ export const HistoryOrderProvider: React.FC<HistoryOrderProps> = ({
         setPage,
         limit,
         setLimit,
+        search,
+        handleChangeSearch,
+        sort,
+        direction,
+        handleSorting,
       }}
     >
       {children}

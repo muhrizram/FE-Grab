@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import dataNotFound from "../../assets/image/datanotfound.png";
+import dataNotFound from "../assets/image/datanotfound.png";
 
 const DataNotFound = () => {
   return (

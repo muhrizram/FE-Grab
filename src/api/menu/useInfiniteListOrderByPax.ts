@@ -8,7 +8,7 @@ interface UseInfiniteListOrderByPaxProps {
   limit?: number;
   page?: number;
   sortBy?: string;
-  direction?: "asc" | "desc";
+  direction?: string;
 }
 
 interface ListOrderResponse {
@@ -25,7 +25,6 @@ const useInfiniteListOrderByPax = ({
   page,
 }: UseInfiniteListOrderByPaxProps) => {
   const getListOrderFn = async () => {
-    console.log("Fetching list order...");
     const params: Record<string, any> = {
       page: page,
       ...(search && { search }),

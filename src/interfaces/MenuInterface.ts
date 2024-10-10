@@ -38,6 +38,6 @@ export interface CUDResponse {
   menu: Menu;
   pax: Pax;
   status: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }

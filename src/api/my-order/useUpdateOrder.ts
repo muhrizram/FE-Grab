@@ -4,27 +4,31 @@ import { UpdateOrderPayload } from "../../interfaces/MyOrderInterface";
 import { apiApp } from "../apiApp";
 
 const useUpdateOrder = (
-    props?: UseMutationOptions<ApiCUDResponseInterface, Error, UpdateOrderPayload, unknown>
-  ) => {
-    const updateOrderFn = async (payload: UpdateOrderPayload) => {
-        console.log("update order...")
-        try {
-            const response = await apiApp.put<ApiCUDResponseInterface>(
-                `/transaction/update`,
-                payload
-            );
+  props?: UseMutationOptions<
+    ApiCUDResponseInterface,
+    Error,
+    UpdateOrderPayload,
+    unknown
+  >
+) => {
+  const updateOrderFn = async (payload: UpdateOrderPayload) => {
+    try {
+      const response = await apiApp.put<ApiCUDResponseInterface>(
+        `/transaction/update`,
+        payload
+      );
 
-            return response.data;
-        } catch (error) {
-            console.error(error);
-            throw new Error("Error updating order");
-        }
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error updating order");
     }
-    return useMutation({
-        mutationFn: updateOrderFn,
-        mutationKey: ["update-order"],
-        ...props,
-    })
-  }
+  };
+  return useMutation({
+    mutationFn: updateOrderFn,
+    mutationKey: ["update-order"],
+    ...props,
+  });
+};
 
-  export default useUpdateOrder;
+export default useUpdateOrder;
