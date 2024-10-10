@@ -5,6 +5,16 @@ export interface ApiCUDResponseInterface {
   data: CUDResponse;
 }
 
+export interface LoginResponse {
+  jwt: string;
+  username: string;
+}
+
+export interface LoginPayload {
+  username: string;
+  password: string;
+}
+
 export interface ApiListInterface {
   message: string;
   statusCode: number;

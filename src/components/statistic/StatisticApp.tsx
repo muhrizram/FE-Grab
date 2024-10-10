@@ -12,7 +12,7 @@ const StatisticApp = () => {
         <Typography variant="h4" mb="30px" component="h1" fontWeight="bold">
           Statistic Order per Month
         </Typography>
-        {data.length > 0 ? (
+        {data ? (
           <Box sx={{ width: "100%", height: "400px", padding: "20px" }}>
             <LineChartComp data={data} />
           </Box>
